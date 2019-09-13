@@ -1,3 +1,3 @@
 # toy-faster-rcnn
 
-An toy implementation of faster rcnn, mainly refers to [simple-faster-rcnn-pytorch](https://github.com/chenyuntc/simple-faster-rcnn-pytorch).
+A toy implementation of faster rcnn, mainly refers to [simple-faster-rcnn-pytorch](https://github.com/chenyuntc/simple-faster-rcnn-pytorch).
