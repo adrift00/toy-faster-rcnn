@@ -1,15 +1,14 @@
-import numpy as np
 import cupy as cp
+import numpy as np
 import torch
 import torch.nn.functional as F
 from collections import namedtuple
-
 from model.faster_rcnn import FasterRCNN
-from model.rpn.region_proposal_network import RegionProposalNetwork
-from model.rpn.anchor_target_creator import AnchorTargetCreator
-from model.rpn.proposal_target_creator import ProposalTargetCreator
-from model.rpn.nms.non_maximum_suppression import non_maximum_suppression
 from model.roi.roi_head_vgg16 import ROIHeadVgg16
+from model.rpn.anchor_target_creator import AnchorTargetCreator
+from model.rpn.nms.non_maximum_suppression import non_maximum_suppression
+from model.rpn.proposal_target_creator import ProposalTargetCreator
+from model.rpn.region_proposal_network import RegionProposalNetwork
 from model.vgg16.vgg16 import decom_vgg16
 from utils.bbox_utils import delta2bbox
 
@@ -122,16 +121,16 @@ class FasterRCNNVgg16(FasterRCNN):
         labels = []
         scores = []
         for img, ori_size in zip(imgs, ori_sizes):
-            img = img[None]  # 只写一个None也会涨价唯独
+            img = img[None]  # to add a new dim
             img = img.to(cfg.device)
             img_size = img.shape[2:]
             scale = img_size[1] / ori_size[1]
             features = self.extractor(img)
-            rpn_deltas, rpn_scores, rois, roi_indies, _ = self.rpn(features, img_size=img_size,scale=scale)
+            rpn_deltas, rpn_scores, rois, roi_indices, _ = self.rpn(features, img_size=img_size, scale=scale)
             rois = torch.from_numpy(rois).to(cfg.device)
-            roi_indies = torch.from_numpy(roi_indies).to(cfg.device).float()
-            roi_deltas, roi_scores = self.roi_head(features, roi_indies=roi_indies, rois=rois)
-            mean = mean = torch.Tensor(self.delta_normalize_mean).cuda(). \
+            roi_indices = torch.from_numpy(roi_indices).to(cfg.device).float()
+            roi_deltas, roi_scores = self.roi_head(features, roi_indies=roi_indices, rois=rois)
+            mean = torch.Tensor(self.delta_normalize_mean).cuda(). \
                 repeat(self.n_class)[None]
             std = torch.Tensor(self.delta_normalize_std).cuda(). \
                 repeat(self.n_class)[None]

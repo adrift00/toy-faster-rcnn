@@ -1,8 +1,9 @@
-from torch.utils.data import DataLoader
 from data.dataset import TrainDataset, TestDataset
 from model.faster_rcnn_trainer import FasterRCNNTrainer
-from config import cfg
+from torch.utils.data import DataLoader
 from utils.eval_utils import eval_detection_voc
+
+from config import cfg
 
 
 def eval(dataloader, faster_rcnn, test_num=10000):
@@ -31,7 +32,7 @@ def train():
     test_dataset = TestDataset()
     train_dataloader = DataLoader(train_dataset,
                                   batch_size=1,
-                                  shuffle=False,
+                                  shuffle=True,
                                   num_workers=cfg.num_workers)
     test_dataloader = DataLoader(test_dataset,
                                  batch_size=1,
@@ -40,7 +41,6 @@ def train():
                                  pin_memory=True)
 
     trainer = FasterRCNNTrainer()
-
 
     if cfg.load_path:
         trainer.load(cfg.load_path)

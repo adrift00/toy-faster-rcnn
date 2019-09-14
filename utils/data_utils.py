@@ -1,6 +1,6 @@
 import numpy as np
-from PIL import Image
 import random
+from PIL import Image
 
 
 def read_image(path, dtype=np.float32, color=True):
@@ -64,7 +64,6 @@ def resize_bbox(bbox, in_size, out_size):
         Bounding boxes rescaled according to the given image shapes.
 
     """
-    # NOTE: xyxy need
     bbox = bbox.copy()
     y_scale = float(out_size[0]) / in_size[0]
     x_scale = float(out_size[1]) / in_size[1]

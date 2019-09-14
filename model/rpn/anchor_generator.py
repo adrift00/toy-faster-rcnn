@@ -9,18 +9,18 @@ class AnchorGenerator(object):
         self.scales = scales
 
     def _generate_base_anchors(self):
-        py = self.basesize / 2
-        px = self.basesize / 2
+        py = self.basesize / 2.
+        px = self.basesize / 2.
         anchor_base = np.zeros((len(self.radios) * len(self.scales), 4), dtype=np.float32)
         for i, radio in enumerate(self.radios):
             for j, scale in enumerate(self.scales):
                 h = self.basesize * scale * np.sqrt(radio)
                 w = self.basesize * scale * np.sqrt(1. / radio)
                 idx = i * len(self.scales) + j
-                anchor_base[idx, 0] = py - h / 2
-                anchor_base[idx, 1] = px - w / 2
-                anchor_base[idx, 2] = py + h / 2
-                anchor_base[idx, 3] = px + w / 2
+                anchor_base[idx, 0] = py - h / 2.
+                anchor_base[idx, 1] = px - w / 2.
+                anchor_base[idx, 2] = py + h / 2.
+                anchor_base[idx, 3] = px + w / 2.
         return anchor_base
 
     def generate_anchors(self, stride, height, width):
